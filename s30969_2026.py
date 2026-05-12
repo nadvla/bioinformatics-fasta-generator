@@ -1,3 +1,7 @@
+# s30969
+# 12.05.2026
+# generator losowych sekwencji DNA
+
 import random
 import csv
 
@@ -5,7 +9,7 @@ import csv
 def validate_positive_int(prompt: str,
                           min_val: int = 1,
                           max_val: int = 100_000) -> int:
-
+                            
     while True:
         value = input(prompt)
         try:
@@ -21,7 +25,7 @@ def validate_positive_int(prompt: str,
             print(f"Błąd: wartość musi być liczbą całkowitą "
                   f"z zakresu [{min_val}, {max_val}].")
 
-
+#walidacja id sekwencji fasta
 def validate_seq_id() -> str:
     while True:
         seq_id = input("Podaj ID sekwencji: ")
@@ -40,7 +44,7 @@ def generate_sequence(length: int) -> str:
     return "".join(random.choice(nucleotides)
                    for _ in range(length))
 
-
+#oblicza statystyki sekwencji
 def calculate_stats(sequence: str) -> dict:
     length = len(sequence)
 
@@ -56,6 +60,7 @@ def calculate_stats(sequence: str) -> dict:
 
     return stats
 
+#wstawia imie w losowe miejsce sekwencji
 def insert_name(sequence: str, name: str) -> str:
     position = random.randint(0, len(sequence))
 
@@ -63,7 +68,7 @@ def insert_name(sequence: str, name: str) -> str:
             name.lower() +
             sequence[position:])
 
-
+#formatuje rekord fasta
 def format_fasta(seq_id: str,
                  description: str,
                  sequence: str,
@@ -82,12 +87,12 @@ def format_fasta(seq_id: str,
 
     return "\n".join(lines)
 
-
+#zapisuje fasta do pliku
 def save_fasta(filename: str, content: str):
     with open(filename, "w") as file:
         file.write(content)
 
-
+#wyszukuje motyw w sekwencji
 def find_motif(sequence: str, motif: str) -> list:
     positions = []
 
@@ -98,7 +103,7 @@ def find_motif(sequence: str, motif: str) -> list:
 
     return positions
 
-
+#tworzy sekwencjie komplementarna
 def complementary_sequence(sequence: str) -> str:
     complement = {
         "A": "T",
@@ -114,13 +119,13 @@ def complementary_sequence(sequence: str) -> str:
 
     return result
 
-
+#tworzy sekwencjie odwrotnie komplementarna
 def reverse_complement(sequence: str) -> str:
     comp = complementary_sequence(sequence)
 
     return comp[::-1]
 
-
+#Tworzy sekwencję mRNA
 def transcribe_mrna(sequence: str) -> str:
     return sequence.replace("T", "U")
 
@@ -128,7 +133,8 @@ def transcribe_mrna(sequence: str) -> str:
 def sliding_window_gc(sequence: str,
                       window_size: int,
                       output_csv: str):
-
+                        
+    #oblicza GC - content w oknach przesuwnych
     with open(output_csv, "w", newline="") as csvfile:
 
         writer = csv.writer(csvfile)
@@ -181,6 +187,7 @@ def main():
 
     print(f"  GC-content: {stats['gc_ratio_A']:.2f}%")
 
+  #dodatkowe funkcjonalności:
 
     motif = input("\nPodaj motyw do wyszukania: ").upper()
 
